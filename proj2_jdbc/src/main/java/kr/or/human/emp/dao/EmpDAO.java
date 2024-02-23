@@ -40,17 +40,24 @@ public class EmpDAO {
 			query += " SELECT"
 					+ " *";
 			query += " FROM"
-					+ " emp";
+					+ " emp2";
 			query += " WHERE"
 					+ "	LOWER(ename) LIKE '%' || LOWER(?) || '%'";
-			query += " AND deptno = ?";
+			
+			if(empDTO.getDeptno() != -1) {
+				query += " AND deptno = ?";				
+			}
+			System.out.println("query : " + query);
 			
 			// SQL 실행 준비
 			PreparedStatement ps = con.prepareStatement(query);
 //			ps.setString(1, ename);
 //			ps.setInt(2, deptno);
 			ps.setString(1, empDTO.getEname());
-			ps.setInt(2, empDTO.getDeptno());
+			
+			if(empDTO.getDeptno() != -1) {
+				ps.setInt(2, empDTO.getDeptno());				
+			}
 			
 			// SQL 실행 및 결과 확보
 			ResultSet rs = ps.executeQuery();
@@ -99,7 +106,61 @@ public class EmpDAO {
 		
 	}
 	
+	private Connection getConn() {
+		
+		// DB 접속
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@112.148.46.134:51521:xe";		
+		String user = "scott4_4";
+		String password = "tiger";
+		
+		Connection con = null;
+		
+		try {
+			// 드라이버 로딩
+			// Class.forName : String 변수로 class 생성
+			Class.forName(driver);
+			
+			// DB 접속
+			con = DriverManager.getConnection(url, user, password);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return con;
+	}
+	
 	// update
+	public int updateEmp2(EmpDTO empDTO) {
+		
+		int result = -1;
+		
+		// DB 접속
+		Connection con = getConn();
+		
+		// SQL 준비 및 실행
+		String sql = "";
+		sql += " UPDATE emp2";
+		sql += " SET ename = ?";
+		sql += " WHERE empno = ?";
+		
+		// 결과 활용
+		try {
+			
+			PreparedStatement ps = con.prepareStatement(sql);
+			
+			ps.setString(1, empDTO.getEname());
+			ps.setInt(2, empDTO.getEmpno());
+			
+			result = ps.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
 	// insert
 	// delete
 	
