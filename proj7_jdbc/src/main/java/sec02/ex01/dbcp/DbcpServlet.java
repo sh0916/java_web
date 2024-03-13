@@ -29,46 +29,24 @@ public class DbcpServlet extends HttpServlet {
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		int empno = Integer.parseInt(request.getParameter("empno"));
-		response.setContentType("text/html; charset=utf-8");
-		
-		DbcpDTO dbcpDTO = new DbcpDTO();
-		dbcpDTO.setEmpno(empno);
-		
-		DbcpDAO dbcpDAO = new DbcpDAO();
-		DbcpDTO dto = dbcpDAO.info(dbcpDTO);
-//		request.setAttribute("dto", dto);
-		response.getWriter().println(dto);
-//		request.getRequestDispatcher("member.jsp").forward(request, response);
-		
-//		PrintWriter out = response.getWriter();
-//		
-//		out.println("<style>td{ border: 1px solid black; width: 150px; padding: 3% }</style>");
-//		out.println("<table>");
-//			out.println("<tr>");
-//				out.println("<td>");
-//					out.println(dto.getEmpno());
-//				out.println("</td>");
-//				out.println("<td>");
-//					out.println(dto.getEname());
-//				out.println("</td>");
-//				out.println("<td>");
-//					out.println(dto.getJob());
-//				out.println("</td>");
-//				out.println("<td>");
-//					out.println(dto.getMgr());
-//				out.println("</td>");
-//				out.println("<td>");
-//					out.println(dto.getHiredate());
-//				out.println("</td>");
-//				out.println("<td>");
-//					out.println(dto.getSal());
-//				out.println("</td>");
-//				out.println("<td>");
-//					out.println(dto.getComm());
-//				out.println("</td>");
-//			out.println("</tr>");
-//		out.println("</table>");
+        
+        System.out.println(request.getParameter("type"));
+        String type = request.getParameter("type");
+        System.out.println(type);
+        
+        if("1".equals(type)) {
+        	
+        	int empno = Integer.parseInt(request.getParameter("empno"));
+        	response.setContentType("text/html; charset=utf-8");
+        	
+        	DbcpDTO dbcpDTO = new DbcpDTO();
+        	dbcpDTO.setEmpno(empno);
+        	
+        	DbcpDAO dbcpDAO = new DbcpDAO();
+        	DbcpDTO dto = dbcpDAO.info(dbcpDTO);
+        	
+        	response.getWriter().println(dto);
+        }
+
 	}
 }

@@ -29,7 +29,7 @@ td, th {
 </head>
 <body>
 
-	<table id="infoTable">
+	<table>
 		
 		<tr>
 			<th>사원 번호</th>
@@ -57,10 +57,28 @@ td, th {
 		}
 		}
 		%>
-		<tr class="detail">
-		</tr>
+		
 
 	</table>
+	<table id="infoTable">
+	
+		<tr class="detail">
+		</tr>
+	
+	</table>
+	<form method="post" action="dbcp" name="retouchForm">
+		<input type="text" name="empno" value="수정할 사원 번호">
+		<select name="retouchSelect">
+			<option>수정할 정보</option>
+			<option value="ename">사원이름</option>
+			<option value="job">직업</option>
+			<option value="mgr">상사번호</option>
+			<option value="sal">연봉</option>
+			<option value="comm">보너스</option>
+		</select>
+		<input type="hidden" name="type" value="2">
+		<input type="button" id="retouch" value="수정하기">
+	</form>
 
 	<script>
 	
@@ -94,7 +112,7 @@ td, th {
 				let xhr = new XMLHttpRequest();
 				xhr.open("post", "dbcp");
 				xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-				xhr.send("empno=" + empno);
+				xhr.send("empno=" + empno + "&type=1");
 				
 				xhr.onload = function() {
 					
@@ -104,11 +122,34 @@ td, th {
 					let arr = data.split(",");
 					
 					let infoTable = document.querySelector("#infoTable");
-					document.querySelector(".every").style.display = "none";
+// 					document.querySelector(".every").style.display = "none";
 					
-					let html = "";		
+					let html = "";
+						html += "<tr>";
+						html += "<th>";
+						html += "사원 번호";
+						html += "</th>";
+						html += "<th>";
+						html += "사원 이름";
+						html += "</th>";
+						html += "<th>";
+						html += "직업";
+						html += "</th>";
+						html += "<th>";
+						html += "상사 번호";
+						html += "</th>";
+						html += "<th>";
+						html += "입사일";
+						html += "</th>";
+						html += "<th>";
+						html += "연봉";
+						html += "</th>";
+						html += "<th>";
+						html += "보너스";
+						html += "</th>";
+						html += "</tr>";
 					
-						for(let j = 0; j < arr.length; j++) {
+						for(let j = 0; j < arr.length -1; j++) {
 							
 							let splitArr = arr[j].split("=");
 							
@@ -131,7 +172,24 @@ td, th {
 				
 				
 			});
+			
 	}
+	
+		document.querySelector("#retouch")
+				.addEventListener("click", ()=> {
+					console.log("수정버튼눌림");
+					let form = document.querySelector("[name=retouchForm]");
+					console.log(form);
+					
+					let xhr = new XMLHttpRequest();
+					
+					xhr.open("post", "dbcp");
+					
+					let formData = new FormData(form);
+					
+					xhr.send(formData);
+					console.log("doAjax 실행");
+				});
 	
 	
 </script>
