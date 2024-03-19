@@ -32,16 +32,16 @@ public class WorkServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		request.setCharacterEncoding("utf-8");
+		response.setContentType("text/html; charset=utf-8");
+		
 		WorkDAO workDAO = new WorkDAO();
 		System.out.println("get 들어옴");
 		List<WorkDTO> list = workDAO.select();
 		
 		request.setAttribute("list", list);
 		
-		Date now = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String formattedDate = sdf.format(now);
-		System.out.println(formattedDate);
+		
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("main.jsp");
 	    dispatcher.forward(request, response);
@@ -52,20 +52,49 @@ public class WorkServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		request.setCharacterEncoding("utf-8");
+		response.setContentType("text/html; charset=utf-8");
+		
 		String type = request.getParameter("type");
 		
 		if("add".equals(type)) {
 			
 			String title = request.getParameter("title");
 			String detail = request.getParameter("detail");
+//			Date now = new Date();
+//			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+//			Date hiredate = sdf.parse(sdf.format(now));
 			
 			WorkDTO workDTO = new WorkDTO();
 			workDTO.setTitle(title);
 			workDTO.setDetail(detail);
+//			workDTO.setHiredate(now);)
+			System.out.println("담김");
 			
 			WorkDAO workDAO = new WorkDAO();
+			workDAO.insert(workDTO);
+		} else if("update".equals(type)) {
 			
+			int seq = Integer.parseInt(request.getParameter("seq"));
+			String title = request.getParameter("title");
+			String detail = request.getParameter("detail");
+			
+			WorkDTO workDTO = new WorkDTO();
+			workDTO.setSeq(seq);
+			workDTO.setTitle(title);
+			workDTO.setDetail(detail);
+			
+			WorkDAO workDAO = new WorkDAO();
+			workDAO.update(workDTO);
+		} else if("delete".equals(type)) {
+			
+			int seq = Integer.parseInt(request.getParameter("seq"));
+			
+			WorkDAO workDAO = new WorkDAO();
+			workDAO.delete(seq);
 		}
+		
+		response.sendRedirect("work");
 	}
 
 }

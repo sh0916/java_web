@@ -10,11 +10,19 @@
 <title>Insert title here</title>
 <style>
 
+	body {
+		text-align: center;
+	}
+
 	#bord {
 		display: block;
 	}
 	
 	#add_div {
+		display: none;
+	}
+	
+	#update_div {
 		display: none;
 	}
 	
@@ -66,18 +74,50 @@
 				<input type="submit" value="작성하기">
 			</form>
 		</div>
+		<div id="update_div">
+			<form method="post" action="work">
+				<input type="text" name="title" id="update_title">
+				<textarea name="detail" id="update_detail"></textarea>
+				<input type="hidden" name="seq" id="update_seq">
+				<input type="hidden" name="type" id="db_type" value="update">
+				<input type="submit" value="수정하기">
+				<input type="button" id="delete_button" value="삭제하기">
+				<input type="button" value="취소하기">
+			</form>
+		</div>
 	</div>
 	
 	<script>
 		
-// 		document.querySelectorAll(".update")
-// 				.addEventListener("click", function(event) {
+		let updateChk = document.querySelectorAll(".update");
+		for(let i = 0; i < updateChk.length; i++) {
+			
+				updateChk[i].addEventListener("click", function(event) {
 					
-// 					var title = parentRow.querySelector('.update').innerText; // 첫 번째 자식 요소의 텍스트 가져옴
-// 			        var detail = parentRow.querySelector('td:nth-child(2)').innerText; // 두 번째 자식 요소의 텍스트 가져옴
-// 			        var hiredate = parentRow.querySelector('td:nth-child(3)').innerText; // 세 번째 자식 요소의 텍스트 가져옴
-// 			        var seq = parentRow.querySelector('input[type="hidden"]').value;
-// 				});
+					let parent = event.target.closest("tr");
+					
+					let title = parent.querySelector('.update').innerText;
+			        let detail = parent.querySelector('td:nth-child(2)').innerText;
+			        let seq = parent.querySelector('input[type="hidden"]').value;
+			        console.log(title + detail + seq);
+			        
+			        document.querySelector("#update_title").value = title;
+			        document.querySelector("#update_detail").innerText = detail;
+			        document.querySelector("#update_seq").value = seq;
+			        
+			        document.querySelector("#bord").style.display = "none";
+			        document.querySelector("#update_div").style.display = "block";
+				});
+		}
+		
+		document.querySelector("#delete_button")
+				.addEventListener("click", function() {
+					
+					document.querySelector("#db_type").value = "delete";
+					
+					let form = document.querySelector("#update_div form");
+					form.submit();
+				});
 		
 		document.querySelector("#add_button")
 				.addEventListener("click", function() {
@@ -85,7 +125,7 @@
 					document.querySelector("#bord").style.display = "none";
 					document.querySelector("#add_div").style.display = "block";
 				});
-	
+		
 	</script>
 </body>
 </html>
