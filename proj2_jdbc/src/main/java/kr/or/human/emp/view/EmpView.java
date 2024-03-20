@@ -45,7 +45,7 @@ public class EmpView {
 		}
 		
 		sb.append("</table>");
-		
+		System.out.println(sb);
 		return sb;
 	}
 	
