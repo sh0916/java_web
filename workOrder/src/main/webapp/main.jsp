@@ -13,6 +13,26 @@
 	body {
 		text-align: center;
 	}
+	
+	table {
+		display: inline-block;
+		border-collapse: collapse;
+	}
+	
+	th, td {
+		border: 1px solid black;
+		padding : 10px;
+	}
+	
+	[type=text] {
+		width: 600px;
+	}
+	
+	textarea {
+		resize: none;
+		width: 600px;
+		height: 300px;
+	}
 
 	#bord {
 		display: block;
@@ -37,6 +57,7 @@
 	<div>
 		<h1>작업 지침서</h1>
 		<div id="bord">
+		<p>제목 클릭시 수정/삭제</p>
 			<table>
 				<tr>
 					<th>제목</th>
@@ -64,20 +85,21 @@
 				}
 			%>
 			</table>
+			<hr>
 			<input type="button" value="추가하기" id="add_button">
 		</div>
 		<div id="add_div">
 			<form method="post" action="work">
-				<input type="text" name="title" placeholder="제목 입력">
-				<textarea name="detail" placeholder="내용 입력"></textarea>
+				<input type="text" name="title" placeholder="제목 입력"><br>
+				<textarea name="detail" placeholder="내용 입력"></textarea><br>
 				<input type="hidden" name="type" value="add">
 				<input type="submit" value="작성하기">
 			</form>
 		</div>
 		<div id="update_div">
 			<form method="post" action="work">
-				<input type="text" name="title" id="update_title">
-				<textarea name="detail" id="update_detail"></textarea>
+				<input type="text" name="title" id="update_title"><br>
+				<textarea name="detail" id="update_detail"></textarea><br>
 				<input type="hidden" name="seq" id="update_seq">
 				<input type="hidden" name="type" id="db_type" value="update">
 				<input type="submit" value="수정하기">
