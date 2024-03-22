@@ -41,6 +41,23 @@
 	<c:if test="${ !result }">
 		id 가 성현 이 아닙니다<br>
 	</c:if>
+	
+<%-- 	<c:if test="${ !(age gt 20) }"> --%>
+	<c:if test="${ not (age gt 20) }">
+		age 가 20 보다 작습니다<br>
+	</c:if>
+	
+<%-- 	<c:if test="${ ! ( (age > 20) && (age < 30) ) }"> --%>
+	<c:if test="${ not ( (age gt 20) and (age lt 30) ) }" var="result">
+		age 가 20 보다 작습니다<br>
+	</c:if>
+	
+	의심가면 그냥 출력해보기 : \${ ( (age < 20) || (age >= 30) ) } : ${ ( (age < 20) || (age >= 30) ) }
+	
+<%-- 	<c:if test="${ ( (age < 20) || (age >= 30) ) }"> --%>
+	<c:if test="${ not ( (age gt 20) and (age lt 30) ) }" var="result">
+		age 가 20 보다 큽니다<br>
+	</c:if>
 
 </body>
 </html>
