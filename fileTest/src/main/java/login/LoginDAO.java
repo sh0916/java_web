@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -28,66 +30,27 @@ public class LoginDAO {
 		return con;
 	}
 	
-	void regi(LoginDTO loginDTO) {
-		
-		Connection con = conDB();
-		PreparedStatement ps = null;
-		
-		String userId = loginDTO.getUserId();
-		String userPass = loginDTO.getUserPass();
-		String imgName = loginDTO.getImgName();
-		
-		String query =  " INSERT INTO regi(user_id, user_pass, img_name)"
-					+ " VALUES(?, ?, ?)";
-		
-		try {
-			
-			ps = con.prepareStatement(query);
-			
-			ps.setString(1, userId);
-			ps.setString(2, userPass);
-			ps.setString(3, imgName);
-			
-			ps.executeUpdate();
-		} catch (Exception e) {
-			
-			e.printStackTrace();
-		} finally {
-			
-			if(ps != null) {
-				try {
-					ps.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if(con != null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	
-	void info() {
+	LoginDTO info(LoginDTO loginDTO) {
 		
 		Connection con = conDB();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
-		String query = "SELECT * FROM regi";
+		String userId = loginDTO.getUserId();
+		String userPass = loginDTO.getUserPass();
+		
+		String query = "SELECT * FROM regi"
+					+ " WHERE user_id='" + userId + "' AND user_pass='" + userPass + "'";
 		
 		try {
 			
 			ps = con.prepareStatement(query);
 			rs = ps.executeQuery();
 			
-			while( rs.next() ) {
-				
-				String userId = rs.getString("user_id");
+			if( rs.next() ) {	
 				String imgName = rs.getString("img_name");
+				
+				loginDTO.setImgName(imgName);
 			}
 		} catch (Exception e) {
 			
@@ -117,6 +80,6 @@ public class LoginDAO {
 			}
 		}
 		
-		
+		return loginDTO;
 	}
 }

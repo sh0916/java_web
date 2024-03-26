@@ -8,11 +8,10 @@
 </head>
 <body>
 
-	<form method="post" action="login" enctype="multipart/form-data" accept-charset="utf-8">
+	<form method="post" action="register" enctype="multipart/form-data" accept-charset="utf-8">
 		아이디 : <input type="text" name="userId"><br>
-		비밀번호 : <input type="text" name="userPass"><br>
+		비밀번호 : <input type="password" name="userPass"><br>
 		프로필사진 : <input type="file" name="userImg"><br>
-		사진이름 : <input type="text" name="imgName"><br>
 		<input type="submit" value="회원가입">
 	</form>
 

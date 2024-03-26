@@ -8,7 +8,8 @@
 </head>
 <body>
 
-	<img src="http://localhost:8080/proj15_file/download.do?fileName=1711435730674_dog.jpg">
+	아이디 : ${ loginInfo.userId }
+	<img src="http://localhost:8080/fileTest/image?fileName=${ loginInfo.imgName }">
 
 </body>
 </html>
