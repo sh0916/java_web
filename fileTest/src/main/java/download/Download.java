@@ -21,7 +21,7 @@ public class Download extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		// 파일저장 시스템 경로
-		String file_rep = "/home/fox/fileTest";
+		String file_rep = "C:\\file_repo";
 		String fileName = request.getParameter("fileName");
 		System.out.println("fileName : " + fileName);
 		
