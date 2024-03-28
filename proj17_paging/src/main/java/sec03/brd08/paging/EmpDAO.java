@@ -31,7 +31,7 @@ private Connection conDB() {
 	}
 
 	// 목록 조회
-	public List<EmpDTO> selectEmp() {
+	public List<EmpDTO> selectEmp(int start, int end) {
 		
 		Connection con = conDB();
 		PreparedStatement ps = null;
@@ -39,11 +39,27 @@ private Connection conDB() {
 		
 		List<EmpDTO> list = new ArrayList<EmpDTO>();
 		
-		String query = "SELECT * FROM emp3";
+		String query = " SELECT * FROM (" +
+					    " 				SELECT rownum rnum, t1.* FROM (" +
+					    " 					WITH emp_recu (lv, empno, mgr, ename) AS (" +
+					    " 					SELECT 1 AS lv, empno, mgr, ename FROM emp4 WHERE mgr IS NULL " +
+					    " 					UNION ALL " +
+					    " 					SELECT er.lv + 1 AS lv, e.empno, e.mgr, e.ename FROM emp_recu er " +
+					    " 					LEFT OUTER JOIN emp4 e ON e.mgr = er.empno WHERE e.mgr IS NOT NULL) " +
+					    " 					SEARCH DEPTH FIRST BY empno SET sort_empno " +
+					    " 					SELECT * FROM emp_recu ORDER BY sort_empno" +
+					    "				) t1" +
+					    ") t2 WHERE rnum >= ? AND rnum <= ?";
 		
 		try {
 			
-			ps = con.prepareStatement(query);
+//			ps = con.prepareStatement(query);
+			ps = new LoggableStatement(con, query);
+			ps.setInt(1, start);
+			ps.setInt(2, end);
+			
+			System.out.println( ((LoggableStatement) ps).getQueryString() );
+			
 			rs = ps.executeQuery();
 			
 			while( rs.next() ) {	
@@ -52,6 +68,8 @@ private Connection conDB() {
 				dto.setEmpno(rs.getInt("empno"));
 				dto.setEname(rs.getString("ename"));
 				dto.setMgr(rs.getInt("mgr"));
+				dto.setLv(rs.getInt("lv"));
+				dto.setRnum(rs.getInt("rnum"));
 				
 				list.add(dto);
 			}
@@ -84,5 +102,57 @@ private Connection conDB() {
 		}
 		
 		return list;
+	}
+	
+	// 전체 개수 조회
+	public int selectTotalEmp() {
+	
+		int totalCount = -1;	
+		
+		Connection con = conDB();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		String query = " SELECT count(*) AS cnt FROM emp4";
+		
+		try {
+			
+			ps = con.prepareStatement(query);
+			rs = ps.executeQuery();
+			
+			while( rs.next() ) {	
+				EmpDTO dto = new EmpDTO();
+				
+				totalCount = rs.getInt("cnt");
+			}
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		} finally {
+			
+			if(ps != null) {
+				try {
+					ps.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return totalCount;
 	}
 }

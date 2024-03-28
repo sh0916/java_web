@@ -11,6 +11,9 @@ public class EmpDTO {
 	Date hiredate;
 	int sal;
 	int comm;
+	
+	int lv;
+	int rnum;
 	/**
 	 * @return the empno
 	 */
@@ -108,10 +111,36 @@ public class EmpDTO {
 		this.deptno = deptno;
 	}
 	int deptno;
+	/**
+	 * @return the lv
+	 */
+	public int getLv() {
+		return lv;
+	}
+	/**
+	 * @param lv the lv to set
+	 */
+	public void setLv(int lv) {
+		this.lv = lv;
+	}
+	/**
+	 * @return the rnum
+	 */
+	public int getRnum() {
+		return rnum;
+	}
+	/**
+	 * @param rnum the rnum to set
+	 */
+	public void setRnum(int rnum) {
+		this.rnum = rnum;
+	}
 	@Override
 	public String toString() {
 		return "EmpDTO [empno=" + empno + ", ename=" + ename + ", job=" + job + ", mgr=" + mgr + ", hiredate="
-				+ hiredate + ", sal=" + sal + ", comm=" + comm + ", deptno=" + deptno + "]";
+				+ hiredate + ", sal=" + sal + ", comm=" + comm + ", lv=" + lv + ", rnum=" + rnum + ", deptno=" + deptno
+				+ "]";
 	}
+
 	
 }
