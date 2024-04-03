@@ -8,6 +8,39 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+
+	.ename {
+		cursor: pointer;
+	}
+	
+</style>
+<script>
+
+	window.addEventListener("load", () => {
+		
+		// class 를 이용해서 선택
+		// let enames = document.querySelectorAll(".ename");
+		// id 의 패턴을 이용해서 선택
+		let enames = document.querySelectorAll("[id^=ename_]");
+		// data-ename 의 패턴을 이용해서 선택
+		// let enames = document.querySelectorAll("[data-ename^=ename_]");
+		
+		for(let i = 0; i < enames.length; i++) {
+			enames[i].addEventListener("click", (event) => {
+				
+				/* 클릭된 요소
+ 				   event.target === this
+ 				   this : span
+ 				   this.parentNode : td
+				*/
+				console.log("enames");
+				event.target.parentNode.querySelector("form").submit();
+			});
+		}
+	});
+
+</script>
 </head>
 <body>
 	
@@ -18,6 +51,8 @@
 	empno : ${ empDTO.empno }<br>
 	ename : ${ empDTO.ename }<br>
 	sal : ${ empDTO.sal }
+	<hr>
+	<a href="/proj23_mybatis/test03/empForm.jsp">회원가입</a>
 	<hr>
 	
 	<table border="1">
@@ -33,7 +68,13 @@
 				<c:forEach var="empList" items="${ empList }">
 					<tr>
 						<td>${ empList.empno }</td>
-						<td>${ empList.ename }</td>
+						<td>
+							<form method="post" action="/proj23_mybatis/param">
+								<input type="hidden" name="action" value="actionDetail">
+								<input type="hidden" name="empno" value="${ empList.empno }">
+							</form>
+							<span class="ename" id="ename_1">${ empList.ename }</span>
+						</td>
 						<td>${ empList.deptno }</td>
 					</tr>
 				</c:forEach>

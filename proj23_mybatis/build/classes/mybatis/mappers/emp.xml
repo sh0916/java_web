@@ -16,6 +16,7 @@
 		/* CDATA [ sql 문 ] 을 사용하면 > 같은 기호를 사용할수있다 */		
 		<![CDATA[
 			SELECT * FROM emp4
+			ORDER BY hiredate DESC
 		]]>
 		
 	</select>

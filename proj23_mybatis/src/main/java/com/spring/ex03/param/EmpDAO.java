@@ -65,4 +65,100 @@ public class EmpDAO {
 		}
 		return empDTO;
 	}
+	
+	public int insertEmp(EmpDTO dto) {
+		
+		int result = -1;
+		SqlSession sqlSession = null;
+		
+		try {
+			sqlMapper = getInstance();
+			
+			if(sqlMapper != null) {				
+				sqlSession = sqlMapper.openSession();
+				
+				result = sqlSession.insert("mapper.emp.param.insertEmp", dto);
+				
+				// SQL 이 성공했을 경우 commit
+				sqlSession.commit();
+			} else {
+				System.out.println("DB 접속 실패");
+			}
+		} catch(Exception e) {
+			
+			if(sqlSession != null) {								
+				// SQL 이 실패했을 경우 rollback
+				sqlSession.rollback();
+			}
+			
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	public int updateEmp(EmpDTO dto) {
+		
+		int result = -1;
+		SqlSession sqlSession = null;
+		
+		try {
+			sqlMapper = getInstance();
+			
+			if(sqlMapper != null) {				
+				
+				// true 를 넣어주면 자동 commit 이 된다 대신 rollback 이 불가능하다
+//				sqlSession = sqlMapper.openSession(true);
+				sqlSession = sqlMapper.openSession();
+				
+				result = sqlSession.insert("mapper.emp.param.updateEmp", dto);
+				
+				// SQL 이 성공했을 경우 commit
+				sqlSession.commit();
+			} else {
+				System.out.println("DB 접속 실패");
+			}
+		} catch(Exception e) {
+			
+			if(sqlSession != null) {								
+				// SQL 이 실패했을 경우 rollback
+				sqlSession.rollback();
+			}
+			
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	public int deleteEmp(int empno) {
+		
+		int result = -1;
+		SqlSession sqlSession = null;
+		
+		try {
+			sqlMapper = getInstance();
+			
+			if(sqlMapper != null) {				
+				sqlSession = sqlMapper.openSession();
+				
+				result = sqlSession.insert("mapper.emp.param.deleteEmp", empno);
+				
+				// SQL 이 성공했을 경우 commit
+				sqlSession.commit();
+			} else {
+				System.out.println("DB 접속 실패");
+			}
+		} catch(Exception e) {
+			
+			if(sqlSession != null) {								
+				// SQL 이 실패했을 경우 rollback
+				sqlSession.rollback();
+			}
+			
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
 }

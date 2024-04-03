@@ -4,14 +4,96 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper.emp.param">
 
-	<!-- #{} => '' 를 자동으로 생성해준다 -->
+	<!-- #{} => '' 를 자동으로 생성해준다 숫자일때는 생성안함 -->
+	<!-- ${} => 아무것도 생성을 안해줌(보안적으로 조금 위험) -->
+	<!-- parameterType 전달인자 받기(생략은 가능하다) -->
+	<!-- 전달인자가 list 또는 배열인 경우 -->
+	<!-- + #{0}, #{1}, #{param1}, #{param2} -->
 	<select id="selectEmpByEmpno" resultType="empDTO3" parameterType="String">
 		SELECT
 			*
 		FROM
-			emp
+			emp4
 		WHERE
 			empno = #{_parameter}
 	</select>
+	
+	<!-- com.spring.ex03.param.EmpDTO 말고 미리 경로를 지정해둔 empDTO3 를 사용 -->
+	<insert id="insertEmp" parameterType="empDTO3">
+		INSERT INTO emp4 (
+			empno,
+			ename,
+			sal,
+			deptno,
+			hiredate
+		) values (
+			#{ empno },
+			#{ ename },
+			#{ sal },
+			#{ deptno },
+			sysdate
+		)
+	</insert>
+	
+	<update id="updateEmp" parameterType="empDTO3">
+		UPDATE
+			emp4
+		SET
+			ename = #{ ename },
+			sal = #{ sal },
+			deptno = #{ deptno }
+		WHERE
+			empno = #{ empno }
+	</update>
+	
+	<delete id="deleteEmp" parameterType="int">
+		DELETE FROM
+			emp4
+		WHERE
+			empno = #{ empno }
+	</delete>
+	
+	 <!-- 
+	 	insert 를 할때 두개의 테이블에 같은 값을 동시에 넣을려면
+	 	미리 시퀀스를 잡아두고 그값을 int 타입으로 저장후
+	 	insert 문에 넣어준다
+	  -->
+    <!-- sql 실행 전(또는 후)에 다른 sql 실행 -->
+    <!-- 
+    	dto 에 id2 라는 필드와 setter 가 있을때 
+    	selectKey 의 keyProperty 에 지정한 필드 즉 dto 의 id2 에 저장됨
+    -->
+	<insert id="seqWithInsert" parameterType="dto">
+		<selectKey keyProperty="id" resultType="int" order="BEFORE">
+			select seq.nextval from dual
+		</selectKey>
+		insert into table_name (col1, col2)
+		values (#{ id }, #{ col2 })
+	</insert>
+	
+	<!-- 
+	 	insert 한 PK 를 알고싶을때
+	  -->
+	<!-- 
+		미리 시퀀스를 실행해서 java 변수에 넣고 활용
+		int a_id = select seq_a.nextval from dual;
+		
+		insert into table_a (a_id, ...
+		values				(#{a_id}, ...
+		
+		insert into table_b (a_id, ...
+		values				(#{a_id}, ...
+	 -->
+	 <!-- 
+	 	dto 에 a_id 필드와 setter 가 있을때
+	 	keyProperty 에 적힌 dto 의 필드에 넣어줌
+	 	
+	 	java dao 에서 sqlSession.insert("id", dto); 
+	 	실행 이후에 dto 의 a_id 에는 방금 insert 한 a_id 가 들어감
+	  -->
+	 <insert id="test2" parameterType="dto" useGeneratedKeys="true" keyProperty="a_id">
+	 	insert into table_a (a_id, name)
+		values				(seq_a.nextval, #{ name })
+	 </insert>
 
 </mapper>
