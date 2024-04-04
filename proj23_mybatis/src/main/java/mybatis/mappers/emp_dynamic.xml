@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.emp.dynamic">
+
+<!-- 	<select id="selectEmp" resultType="empDTO4"> -->
+<!-- 		SELECT -->
+<!-- 			* -->
+<!-- 		FROM -->
+<!-- 			emp4 -->
+<!-- 	</select> -->
+
+	<!-- where 태그안에 조건을 적으면 조건이 일치할경우만 if 문이 동작하고 -->
+	<!-- 아닐경우 없어진다 (WHERE 1 = 1) -->
+	<!-- where 태그안의 두번째 조건에 and 를 사용할경우 앞에 조건이 거짓이여도 -->
+	<!-- where 태그에서 두번째 조건의 and 를 자동으로 지워준다 -->
+	<select id="selectEmp" parameterType="empDTO4" resultType="empDTO4">
+		SELECT
+			*
+		FROM
+			emp4
+		<where>
+			<if test="ename != null and ename != ''">
+				UPPER(ename) LIKE '%' || UPPER(#{ ename }) || '%'
+			</if>
+			<if test="sal != -1">
+				AND sal <![CDATA[ >= ]]> #{ sal }
+			</if>
+			<if test="job != null and job != ''">
+				UPPER(job) LIKE '%' || UPPER(#{ job }) || '%'
+			</if>
+			<if test="ename != null and ename != '' or job != null and job != ''">
+				AND (UPPER(ename) LIKE '%' || UPPER(#{ ename }) || '%') OR (UPPER(job) LIKE '%' || UPPER(#{ job }) || '%')
+			</if>
+		</where>
+	</select>
+	<!-- LIKE 를 사용할때 내가준 parameter 값이 '' 안에 들어가기 때문에 '%' || 이런식으로 따로 이어줘야 한다 -->
+
+	<select id="selectEmp2" parameterType="empDTO4" resultType="empDTO4">
+		SELECT
+			*
+		FROM
+			emp4
+		<where>
+		
+			<if test="type != null and type != ''">
+				<if test="type == 1">
+					LOWER(ename) LIKE '%' || LOWER(#{keyword}) || '%'
+				</if>
+				<if test="type == 2">
+					AND sal <![CDATA[ >= ]]> #{ keyword }
+				</if>
+				<if test="type == 3">
+					AND sal <![CDATA[ <= ]]> #{ keyword }
+				</if>
+				<if test="type == 4">
+					AND UPPER(job) LIKE '%' || UPPER(#{ keyword }) || '%'
+				</if>
+				<if test="type == 5">
+					AND 
+						(UPPER(ename) LIKE '%' || UPPER(#{ keyword }) || '%') 
+						OR 
+						(UPPER(job) LIKE '%' || UPPER(#{ keyword }) || '%')
+				</if>
+			</if>
+		
+		</where>
+		<if test="sort == 1">
+			ORDER BY empno DESC
+		</if>
+		<if test="sort == 2">
+			ORDER BY empno asc
+		</if>
+	</select>
+
+</mapper>

@@ -63,13 +63,13 @@
     	dto 에 id2 라는 필드와 setter 가 있을때 
     	selectKey 의 keyProperty 에 지정한 필드 즉 dto 의 id2 에 저장됨
     -->
-	<insert id="seqWithInsert" parameterType="dto">
-		<selectKey keyProperty="id" resultType="int" order="BEFORE">
-			select seq.nextval from dual
-		</selectKey>
-		insert into table_name (col1, col2)
-		values (#{ id }, #{ col2 })
-	</insert>
+<!-- 	<insert id="seqWithInsert" parameterType="dto"> -->
+<!-- 		<selectKey keyProperty="id" resultType="int" order="BEFORE"> -->
+<!-- 			select seq.nextval from dual -->
+<!-- 		</selectKey> -->
+<!-- 		insert into table_name (col1, col2) -->
+<!-- 		values (#{ id }, #{ col2 }) -->
+<!-- 	</insert> -->
 	
 	<!-- 
 	 	insert 한 PK 를 알고싶을때
@@ -91,9 +91,9 @@
 	 	java dao 에서 sqlSession.insert("id", dto); 
 	 	실행 이후에 dto 의 a_id 에는 방금 insert 한 a_id 가 들어감
 	  -->
-	 <insert id="test2" parameterType="dto" useGeneratedKeys="true" keyProperty="a_id">
-	 	insert into table_a (a_id, name)
-		values				(seq_a.nextval, #{ name })
-	 </insert>
+<!-- 	 <insert id="test2" parameterType="dto" useGeneratedKeys="true" keyProperty="a_id"> -->
+<!-- 	 	insert into table_a (a_id, name) -->
+<!-- 		values				(seq_a.nextval, #{ name }) -->
+<!-- 	 </insert> -->
 
 </mapper>

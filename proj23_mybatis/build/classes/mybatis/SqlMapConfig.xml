@@ -17,6 +17,7 @@
 	<typeAliases>
 		<typeAlias type="com.spring.ex01.EmpDTO" alias="empDTO"/>
 		<typeAlias type="com.spring.ex03.param.EmpDTO" alias="empDTO3"/>
+		<typeAlias type="com.spring.ex04.dynamic.EmpDTO" alias="empDTO4"/>
 	</typeAliases>
 
 	<environments default="development">
@@ -34,6 +35,7 @@
 	<mappers>
 		<mapper resource="mybatis/mappers/emp.xml"/>
 		<mapper resource="mybatis/mappers/emp_param.xml"/>
+		<mapper resource="mybatis/mappers/emp_dynamic.xml"/>
 	</mappers>
 	
 </configuration>
