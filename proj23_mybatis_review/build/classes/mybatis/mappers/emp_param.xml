@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.emp.param">
+	
+	<!--
+		parameterType 전달인자 받기(생략은 가능하다)
+		
+		#{empno}마음대로 변수명 정해서 썼는데 안될때
+		+	#{_parameter}를 사용하면 된다
+		
+		전달인자가 list 또는 배열인 경우
+		+	#{0}, #{1}, #{param1}, #{param2} 
+		
+		#{} : 자동으로 '를 붙여줌. 숫자일때는 안붙여줌 
+		${} : 아무것도 안붙임 *쪼끔 위험
+	-->
+	<select id="selectEmpByEmpno" resultType="empDTO3" parameterType="string">
+	
+		select * from emp4
+		where empno = #{_parameter}
+	
+	</select>
+	<!-- com.spring.ex03.param.EmpDTO 쓰기 귀찮으니 empDTO3 사용  -->
+<!-- 	<insert id="insertEmp" parameterType="com.spring.ex03.param.EmpDTO"> -->
+	<insert id="insertEmp" parameterType="empDTO3">
+		insert into emp4 (
+			empno, 
+			ename, 
+			sal, 
+			deptno, 
+			hiredate
+		) values (
+			#{empno},
+			#{ename},
+			#{sal},
+			#{deptno},
+			sysdate
+		)
+	</insert>
+	
+	<update id="updateEmp" parameterType="empDTO3">
+		update emp4
+		set
+			ename = #{ename},
+			sal = #{sal},
+			deptno = #{deptno}
+		where
+			empno = #{empno}
+	</update>
+	
+	
+	<!-- sql 실행 전(또는 후)에 다른 sql 실행 -->
+	<!-- 
+		dto에 id2라는 필드와 setter가 있을때
+		selectKey의 keyProperty에 지정한 필드 즉 dto의 id2에 저장됨
+	 -->
+<!-- 	<insert id="seqWithInsert" parameterType="dto"> -->
+<!-- 	 	<selectKey keyProperty="id2" resultType="int" order="BEFORE"> -->
+<!-- 		 	select seq.nextval from dual -->
+<!-- 	 	</selectKey> -->
+	 	
+<!-- 	 	insert into table_name (col1, col2) -->
+<!-- 	 	values (#{id2}, #{col2}) -->
+	 	
+<!-- 	</insert> -->
+	
+	
+	<!--
+		insert 한 PK를 알고 싶을때 
+	 -->
+	<!-- 
+		미리 시퀀스를 실행해서 java 변수에 넣고 활용
+		int a_id = select seq_a.nextval from daul;
+	
+		insert into table_a (a_id, ...
+		values              (#{a_id}, ....
+		
+		insert into table_b (a_id, 
+		values      		(#{a_id}
+		
+	-->
+	<!--
+		dto에 a_id 필드와 setter가 있을때
+		keyProperty에 적힌 dto의 필드에 넣어줌
+		
+		java dao에서 sqlSession.insert("id", dto);
+		실행 이후에 dto의 a_id에는 방금 insert한 a_id가 들어감
+	 -->
+<!-- 	<insert id="test2" parameterType="dto" useGeneratedKeys="true" keyProperty="a_id"> -->
+<!-- 		insert into table_a (a_id, name) -->
+<!-- 		values              (seq_a.nextval, #{name}) -->
+<!-- 	</insert> -->
+	 
+</mapper>
