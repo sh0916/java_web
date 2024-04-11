@@ -10,6 +10,12 @@
 
 	<h1>아이디 : ${ userID }</h1>
 	<h1>이름 : ${ userName }</h1>
+	<hr>
+	info.userID : ${ info.userID }<br>
+	info.userName : ${ info.userName }<br>
+	
+	memberDTO.userID : ${ memberDTO.userID }<br>
+	memberDTO.userName : ${ memberDTO.userName }
 
 </body>
 </html>
