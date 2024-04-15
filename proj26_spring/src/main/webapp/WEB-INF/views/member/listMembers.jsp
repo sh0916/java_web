@@ -8,12 +8,7 @@
 </head>
 <body>
 
-	<form method="post" action="login5.do">
-		아이디 : <input type="text" name="userID"><br>
-		이름 : <input type="text" name="userName"><br>
-		<br>
-		<input type="submit" value="로그인">
-	</form>
-
+	list : ${ memberList }
+	
 </body>
 </html>
